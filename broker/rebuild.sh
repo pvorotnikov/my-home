@@ -23,6 +23,7 @@ docker run \
     --hostname $CONTAINER_HOSTNAME \
     -p $PORT_AMQP:5672 \
     -p $PORT_MQTT:1883 \
-    -p $PORT_MANAGER:15672 \
+    -p $PORT_MANAGER_HTTP:15672 \
     -d \
+    --restart=always \
     $IMAGE_NAME

@@ -1,0 +1,6 @@
+{
+    "HOST": "127.0.0.1",
+    "PORT": 1883,
+    "TOPIC_IN": "openHAB2/out/+/state",
+    "TOPIC_OUT": "iot/out/state"
+}

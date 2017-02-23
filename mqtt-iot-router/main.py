@@ -6,7 +6,7 @@
 # ###############################
 
 import os, sys, logging, argparse, json
-from client import ClientInterface
+from client import Client
 from jsoncfg import load_config, node_exists
 
 # program constants
@@ -15,7 +15,6 @@ VERBOSE_LOGGING_FORMAT = "%(levelname)s: %(message)s (%(filename)s:%(lineno)d)"
 PROGRAM = 'mqtt-iot-router'
 VERSION = '1.0.0'
 
-client = None
 config = None
 
 def main():
@@ -38,14 +37,21 @@ def main():
 
     # load config
     config = load_config(args.config)
+    client = Client(on_connect, on_message, host=config.HOST.value, port=config.PORT.value)
 
-    client = ClientInterface(on_message, host=config.HOST.value, port=config.PORT.value)
+# connection established
+def on_connect(client, userdata, flags, rc) :
+
+    global config
+    logging.info('Connected')
+
     client.subscribe(config.TOPIC_IN.value)
 
-# republish message
-def on_message(msg) :
 
-    global client, config
+# republish message
+def on_message(client, userdata, msg) :
+
+    global config
 
     topic = msg.topic
     payload = msg.payload
